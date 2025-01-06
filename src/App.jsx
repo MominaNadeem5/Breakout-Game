@@ -23,17 +23,16 @@ const App = () => {
     x: 0,
     y: 0,
     visible: false,
-    timer: null,
   };
 
-  const initializeBalls = (level) => {
+  const initializeBalls = (level) => {   
     const balls = [];
     for (let i = 0; i < level; i++) {
       balls.push({
         x: 290,
         y: 290,
-        dx: 2 + i,
-        dy: -2 - i,
+        dx: 2+i ,
+        dy: -2-i ,
       });
     }
     return balls;
@@ -117,18 +116,23 @@ const App = () => {
 
     let lastBrickHit = null;
 
-    const collisionDetection = () => {
+   const collisionDetection = () => {
       bricks.forEach((brick) => {
         if (brick.status === 1) {
           balls.forEach((ball) => {
             if (
-              ball.x > brick.x &&
-              ball.x < brick.x + brickWidth &&
-              ball.y > brick.y &&
-              ball.y < brick.y + brickHeight
+              ball.x+10 > brick.x &&
+              ball.x -10< brick.x + brickWidth &&
+              ball.y +10> brick.y &&
+              ball.y-10 < brick.y + brickHeight
             ) {
-              ball.dy = -ball.dy;
 
+              if (ball.x > brick.x && ball.x < brick.x + brickWidth) {
+                ball.dy = -ball.dy;
+              } else {
+                ball.dx = -ball.dx;
+              }
+               
               if (lastBrickHit && lastBrickHit.color === brick.color && lastBrickHit !== brick) {
                 lastBrickHit.status = 0;
                 brick.status = 0;
@@ -155,7 +159,7 @@ const App = () => {
         setGameWon(true);
       }
     };
-
+ 
     const draw = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       drawBricks();
